@@ -1,0 +1,397 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Lab_2</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-09-25"><meta name="DC.source" content="Lab_2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">1) Plotting Continuous Time Signals</a></li><li><a href="#2">2) Plotting Discrete Time Signals</a></li><li><a href="#3">3) The conv Command</a></li><li><a href="#4">4) Plotting a Sampled Signal</a></li><li><a href="#5">Class Notes Section 3</a></li></ul></div><h2 id="1">1) Plotting Continuous Time Signals</h2><pre class="codeinput">subplot(3,1,1);
+t = 0:2*pi; plot(t,sin(t));
+subplot(3,1,2);
+t = 0:0.2:2*pi; plot(t,sin(t));
+subplot(3,1,3);
+t = 0:0.02:2*pi; plot(t,sin(t));
+
+
+t = 0:0.02:2*pi;
+figure(1);
+clf; <span class="comment">%clears figure</span>
+plot(t,sin(t),<span class="string">'r'</span>); <span class="comment">% third argument changes color</span>
+title(<span class="string">"My Favorite Function"</span>);
+xlabel(<span class="string">"t (Seconds)"</span>);
+ylabel(<span class="string">"y(t)"</span>);
+axis([0 2*pi -1.2 1.2]);
+
+figure(2);
+clf;
+subplot(3,1,1);
+t = 0:0.2:2*pi; plot(t,sin(t),t,sin(2*t))
+subplot(3,1,2);
+t2 = 0:0.2:2*pi; plot(t,sin(t),<span class="string">'.'</span>);
+subplot(3,1,3);
+t = 0:0.2:2*pi; plot(t,sin(t),t,sin(t),<span class="string">'r.'</span>);
+</pre><img vspace="5" hspace="5" src="Lab_2_01.png" alt=""> <img vspace="5" hspace="5" src="Lab_2_02.png" alt=""> <img vspace="5" hspace="5" src="Lab_2_03.png" alt=""> <h2 id="2">2) Plotting Discrete Time Signals</h2><pre class="codeinput">n = -10:10;
+f = (n &gt;= 0);
+
+figure(1);
+clf;
+stem (n,f);
+
+step_f = @(n, t) n &gt;= t;
+delta_f = @(n,t) n == t;
+ramp_f = @(n,t) (n-t).*(n &gt;= t);
+
+figure(2);
+clf;
+f = step_f(n,0) - step_f(n,4);
+stem(n, f);
+axis([-10 10 0 2]);
+
+figure(3);
+clf;
+<span class="comment">% g = n.*step_f(n,0) - ( 2*(n-4) .* step_f(n,4) ) + ( (n-8) .* step_f(n,8) );</span>
+g = ramp_f(n,0) - 2*ramp_f(n,4) + ramp_f(n,8);
+stem(n,g);
+axis([-10 10 0 5]);
+
+figure(4);
+clf;
+x = delta_f(n,0) - 2*delta_f(n,4);
+stem(n,x);
+axis([-5 5 -3 3]);
+
+figure(5);
+clf;
+y = (0.9.^n) .* ( step_f(n,0) - step_f(n,20) );
+stem(n,y);
+axis([-5 15 0 2]);
+
+figure(6);
+clf;
+v = cos(0.12*pi*n) .* step_f(n,0);
+stem(n,v);
+axis([-pi 4*pi -2 2]);
+</pre><img vspace="5" hspace="5" src="Lab_2_04.png" alt=""> <img vspace="5" hspace="5" src="Lab_2_05.png" alt=""> <img vspace="5" hspace="5" src="Lab_2_06.png" alt=""> <img vspace="5" hspace="5" src="Lab_2_07.png" alt=""> <img vspace="5" hspace="5" src="Lab_2_08.png" alt=""> <img vspace="5" hspace="5" src="Lab_2_09.png" alt=""> <h2 id="3">3) The conv Command</h2><pre class="codeinput">n = -10:10;
+step_f = @(n, t) n &gt;= t;
+delta_f = @(n,t) n == t;
+ramp_f = @(n,t) (n-t).*(n &gt;= t);
+f = step_f(n,0) - step_f(n,4);
+N_f = length(f);
+g = ramp_f(n,0) - 2*ramp_f(n,4) + ramp_f(n,8);
+N_g = length(g);
+
+figure(1);
+clf;
+
+subplot(3,2,1);
+ff = conv(f,f);
+N_ff = 2*N_f - 1;
+<span class="comment">%stem((-(N_ff-1)/2:(N_ff-1)/2,ff);</span>
+stem(-1*((N_ff-1)/2):((N_ff-1)/2), ff);
+<span class="comment">%stem(n, f);</span>
+title(<span class="string">"ff"</span>);
+xlabel(<span class="string">"n"</span>);
+ylabel(<span class="string">"ff(n)"</span>);
+axis([-10 10 0 5]);
+
+subplot(3,2,2);
+stem(n,g);
+title(<span class="string">"g (compare with ff)"</span>);
+xlabel(<span class="string">"n"</span>);
+ylabel(<span class="string">"g(n)"</span>);
+axis([-10 10 0 5]);
+
+subplot(3,2,3);
+fff = conv(ff,f);
+N_fff = N_ff + N_f - 1;
+stem(-1*((N_fff-1)/2):((N_fff-1)/2), fff);
+title(<span class="string">"fff"</span>);
+xlabel(<span class="string">"n"</span>);
+ylabel(<span class="string">"fff(n)"</span>);
+axis([-5 15 0 15]);
+
+subplot(3,2,4);
+fg = conv(f,g);
+N_fg = N_f + N_g - 1;
+stem(-1*((N_fg-1)/2):((N_fg-1)/2), fg);
+title(<span class="string">"fg"</span>);
+xlabel(<span class="string">"n"</span>);
+ylabel(<span class="string">"fg(n)"</span>);
+axis([-5 15 0 15]);
+
+subplot(3,2,5);
+gd = conv(g,delta_f(n,0));
+N_gd = 2*N_g - 1;
+stem(-1*((N_gd-1)/2):((N_gd-1)/2), gd);
+title(<span class="string">"g\delta"</span>);
+xlabel(<span class="string">"n"</span>);
+ylabel(<span class="string">"g\delta(n)"</span>);
+axis([-5 15 0 7]);
+
+subplot(3,2,6);
+gg = conv(g,g);
+N_gg = 2*N_g - 1;
+stem(-1*((N_gg-1)/2):((N_gg-1)/2), gg);
+title(<span class="string">"gg"</span>);
+xlabel(<span class="string">"n"</span>);
+ylabel(<span class="string">"gg(n)"</span>);
+axis([-5 15 0 50]);
+
+<span class="comment">% Keep convolving with itself resulting in Gaussian function of probability</span>
+<span class="comment">% Central Limit Theorem and convlution</span>
+<span class="comment">% f*f == g because convolusion is binomial multiplication</span>
+</pre><img vspace="5" hspace="5" src="Lab_2_10.png" alt=""> <h2 id="4">4) Plotting a Sampled Signal</h2><pre class="codeinput">x = [ 6.0, -1.3, -8.0, -11.7, -11.0, -6.0, 1.3, 8.0, 11.7, 11.0, 6.0, -1.3 ];
+y = 0 : 0.3 : 0.3*(length(x)-1);
+stem(y,x);
+title(<span class="string">"Sampled Signal"</span>);
+xlabel(<span class="string">"TIME (SECONDS)"</span>);
+ylabel(<span class="string">"x(t)"</span>);
+set(gca,<span class="string">'XTick'</span>,0 : 0.3 : 0.3*(length(x)-1));
+</pre><img vspace="5" hspace="5" src="Lab_2_11.png" alt=""> <h2 id="5">Class Notes Section 3</h2><pre class="codeinput"><span class="comment">%{
+</span><span class="comment">N_f = length(f);
+</span><span class="comment">N_f = length(g);
+</span><span class="comment">ff = conv(f,f);
+</span><span class="comment">N_ff = 2 * N_f - 1;
+</span><span class="comment">fff = conv(ff,f);
+</span><span class="comment">N_fff = N_ff + N_f - 1;
+</span><span class="comment">
+</span><span class="comment">subplot(3,2,1);
+</span><span class="comment">stem(0:N_ff-1,ff);
+</span><span class="comment">subplot(3,2,2);
+</span><span class="comment">stem(0:N_fff-1,fff);
+</span><span class="comment">%}</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% 1) Plotting Continuous Time Signals
+
+subplot(3,1,1);
+t = 0:2*pi; plot(t,sin(t));
+subplot(3,1,2);
+t = 0:0.2:2*pi; plot(t,sin(t));
+subplot(3,1,3);
+t = 0:0.02:2*pi; plot(t,sin(t));
+
+
+t = 0:0.02:2*pi; 
+figure(1);
+clf; %clears figure
+plot(t,sin(t),'r'); % third argument changes color
+title("My Favorite Function");
+xlabel("t (Seconds)");
+ylabel("y(t)");
+axis([0 2*pi -1.2 1.2]);
+
+figure(2);
+clf;
+subplot(3,1,1);
+t = 0:0.2:2*pi; plot(t,sin(t),t,sin(2*t))
+subplot(3,1,2);
+t2 = 0:0.2:2*pi; plot(t,sin(t),'.');
+subplot(3,1,3);
+t = 0:0.2:2*pi; plot(t,sin(t),t,sin(t),'r.');
+
+%% 2) Plotting Discrete Time Signals
+
+n = -10:10;
+f = (n >= 0);
+
+figure(1);
+clf;
+stem (n,f);
+
+step_f = @(n, t) n >= t;
+delta_f = @(n,t) n == t;
+ramp_f = @(n,t) (n-t).*(n >= t);
+
+figure(2);
+clf;
+f = step_f(n,0) - step_f(n,4);
+stem(n, f);
+axis([-10 10 0 2]);
+
+figure(3);
+clf;
+% g = n.*step_f(n,0) - ( 2*(n-4) .* step_f(n,4) ) + ( (n-8) .* step_f(n,8) );
+g = ramp_f(n,0) - 2*ramp_f(n,4) + ramp_f(n,8);
+stem(n,g);
+axis([-10 10 0 5]);
+
+figure(4);
+clf;
+x = delta_f(n,0) - 2*delta_f(n,4);
+stem(n,x);
+axis([-5 5 -3 3]);
+
+figure(5);
+clf;
+y = (0.9.^n) .* ( step_f(n,0) - step_f(n,20) );
+stem(n,y);
+axis([-5 15 0 2]);
+
+figure(6);
+clf;
+v = cos(0.12*pi*n) .* step_f(n,0);
+stem(n,v);
+axis([-pi 4*pi -2 2]);
+
+%% 3) The conv Command
+
+n = -10:10;
+step_f = @(n, t) n >= t;
+delta_f = @(n,t) n == t;
+ramp_f = @(n,t) (n-t).*(n >= t);
+f = step_f(n,0) - step_f(n,4);
+N_f = length(f);
+g = ramp_f(n,0) - 2*ramp_f(n,4) + ramp_f(n,8);
+N_g = length(g);
+
+figure(1);
+clf;
+
+subplot(3,2,1);
+ff = conv(f,f);
+N_ff = 2*N_f - 1;
+%stem((-(N_ff-1)/2:(N_ff-1)/2,ff);
+stem(-1*((N_ff-1)/2):((N_ff-1)/2), ff);
+%stem(n, f);
+title("ff");
+xlabel("n");
+ylabel("ff(n)");
+axis([-10 10 0 5]);
+
+subplot(3,2,2);
+stem(n,g);
+title("g (compare with ff)");
+xlabel("n");
+ylabel("g(n)");
+axis([-10 10 0 5]);
+
+subplot(3,2,3);
+fff = conv(ff,f);
+N_fff = N_ff + N_f - 1;
+stem(-1*((N_fff-1)/2):((N_fff-1)/2), fff);
+title("fff");
+xlabel("n");
+ylabel("fff(n)");
+axis([-5 15 0 15]);
+
+subplot(3,2,4);
+fg = conv(f,g);
+N_fg = N_f + N_g - 1;
+stem(-1*((N_fg-1)/2):((N_fg-1)/2), fg);
+title("fg");
+xlabel("n");
+ylabel("fg(n)");
+axis([-5 15 0 15]);
+
+subplot(3,2,5);
+gd = conv(g,delta_f(n,0));
+N_gd = 2*N_g - 1;
+stem(-1*((N_gd-1)/2):((N_gd-1)/2), gd);
+title("g\delta");
+xlabel("n");
+ylabel("g\delta(n)");
+axis([-5 15 0 7]);
+
+subplot(3,2,6);
+gg = conv(g,g);
+N_gg = 2*N_g - 1;
+stem(-1*((N_gg-1)/2):((N_gg-1)/2), gg);
+title("gg");
+xlabel("n");
+ylabel("gg(n)");
+axis([-5 15 0 50]);
+
+% Keep convolving with itself resulting in Gaussian function of probability
+% Central Limit Theorem and convlution
+% f*f == g because convolusion is binomial multiplication
+
+%% 4) Plotting a Sampled Signal
+
+x = [ 6.0, -1.3, -8.0, -11.7, -11.0, -6.0, 1.3, 8.0, 11.7, 11.0, 6.0, -1.3 ];
+y = 0 : 0.3 : 0.3*(length(x)-1);
+stem(y,x);
+title("Sampled Signal");
+xlabel("TIME (SECONDS)");
+ylabel("x(t)");
+set(gca,'XTick',0 : 0.3 : 0.3*(length(x)-1));
+
+
+%% Class Notes Section 3
+%{
+N_f = length(f);
+N_f = length(g);
+ff = conv(f,f);
+N_ff = 2 * N_f - 1;
+fff = conv(ff,f);
+N_fff = N_ff + N_f - 1;
+
+subplot(3,2,1);
+stem(0:N_ff-1,ff);
+subplot(3,2,2);
+stem(0:N_fff-1,fff);
+%}
+
+##### SOURCE END #####
+--></body></html>
