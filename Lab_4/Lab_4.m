@@ -6,7 +6,10 @@ clc;
 step = @(n, t) n >= t;
 delta = @(n,t) n == t;
 ramp = @(n,t) (n-t).*(n >= t);
+
 %% 1: Difference Equation
+% H(z) = Y/X
+% Result takes the form of a damped sinusoid
 %{
 %n = 0:10;
 %Diffeq(delta(n,0));
@@ -23,8 +26,34 @@ hold on;
 stem(0:length(x)-1,y(1,:));
 hold off;
 %}
+n = 0:25;
+impulse = delta(n,0);
+
+h = myDiffeq(impulse,4);
+len_h = length(h);
+
+numerator = [1 -2.5];
+denominator = [1 -1 0.7];
+h_filter = filter(numerator, denominator, impulse);
+
+figure(1);
+clf;
+subplot(2,1,1);
+stem(0:len_h-1,impulse);
+title("Impulse Signal \delta(n)");
+
+subplot(2,1,2);
+% See the same response when using the filter command and difference equation
+stem(0:len_h-1,h,'r');
+hold on;
+stem(0:len_h-1,h_filter,'k--');
+hold off;
+legend("Difference Equation", "Filter");
+title("Difference Equation Impulse Response");
 
 %% 2: Partial Franction Expansion
+% Using MATLAB Residue Command
+
 
 %% 3: Expression
 
