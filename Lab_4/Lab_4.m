@@ -83,6 +83,27 @@ title("Partial Fraction Expansion Impulse Response");
 %% 3: Expression
 % Non-Complex Impulse Response
 % h(n) = Ar^ncos(wn+theta)u(n)
+% C = Re^(ja)   p = re^(jB)
+
+% Complex to Polar conversion
+R1 = abs(C1); R2 = abs(C2);
+a1 = angle(C1); a2 = angle(C2);
+r1 = abs(p1); r2 = abs(p2);
+B1 = angle(p1); B2 = angle(p2);
+
+if (R2 == R1) 
+    disp("R2 == R1 True");
+end
+if (a2 == -1*a1) 
+    disp("a2 == -a1 True");
+end
+if (r2 == r1) 
+    disp("r2 == r1 True");
+end
+if (B2 == -1*B1) 
+    disp("B2 == -B1 True");
+end
+
 
 %% 4: Z-Plane
 % Z-Plane/Transform shows stability
