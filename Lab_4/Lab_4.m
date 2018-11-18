@@ -26,7 +26,7 @@ hold on;
 stem(0:length(x)-1,y(1,:));
 hold off;
 %}
-n = 0:25;
+n = 0:30;
 impulse = delta(n,0);
 
 h = myDiffeq(impulse,4);
@@ -39,6 +39,7 @@ h_filter = filter(numerator, denominator, impulse);
 figure(1); clf;
 subplot(2,1,1);
 stem(0:len_h-1,impulse);
+xlim([-5 30]);
 title("Impulse Signal \delta(n)");
 
 subplot(2,1,2);
@@ -47,6 +48,7 @@ stem(0:len_h-1,h,'r',"Linewidth", 1.25);
 hold on;
 stem(0:len_h-1,h_filter,'k--',"Linewidth", 1.25);
 hold off;
+xlim([-5 30]);
 legend("Difference Equation", "Filter");
 title("Difference Equation Impulse Response");
 
@@ -68,6 +70,7 @@ h_partial = (C1 * p1.^n .* step_funct) + (C2 * p2.^n .* step_funct);
 figure(2); clf;
 subplot(2,1,1);
 stem(0:len_h-1,impulse);
+xlim([-5 30]);
 title("Impulse Signal \delta(n)");
 
 subplot(2,1,2);
@@ -76,6 +79,7 @@ hold on;
 stem(0:len_h-1,h_filter,'r',"Linewidth", 1.25);
 stem(0:len_h-1,h_partial,'k--',"Linewidth", 1.25);
 hold off;
+xlim([-5 30]);
 legend("Difference Equation", "Filter", "Partial Fraction");
 title("Partial Fraction Expansion Impulse Response");
 
@@ -104,6 +108,43 @@ if (B2 == -1*B1)
     disp("B2 == -B1 True");
 end
 
+% Analytic Expression Variables and Calculation
+% h(n) = 2R1 * r1^n * cos(B1n+a1) * u(n)
+A = 2 * R1;
+w0 = B1;
+theta0 = a1;
+h_analytic = A * r1.^n .* cos(w0*n + theta0) .* step(n,0);
+
+figure(3); clf;
+% Enable Fullscreen Figure (small graphs otherwise)
+% set(gcf, 'Units', 'Normalized', 'OuterPosition', [0, 0.04, 1, 0.96]);
+subplot(3,1,1);
+stem(0:len_h-1,h,'y',"Linewidth", 2);
+hold on;
+stem(0:len_h-1,h_filter,'r',"Linewidth", 1.25);
+stem(0:len_h-1,h_partial,'k--',"Linewidth", 1.25);
+stem(0:len_h-1,h_analytic,'b:',"Linewidth", 1.75);
+hold off;
+xlim([-5 30]);
+legend("Difference Equation", "Filter", "Partial Fraction", "Analytic Expression");
+title("Analytical Expression Impulse Response");
+
+subplot(3,1,2);
+stem(0:len_h-1,(h_analytic - h_partial));
+%ylim([-2 2]);
+xlim([-5 30]);
+title("Difference Between Analytic and Partial (should be just error)");
+
+subplot(3,1,3);
+t = 0:0.01:30;
+h_analytic_cont = A * r1.^t .* cos(w0*t + theta0) .* step(t,0);
+stem(0:len_h-1,h_analytic,'b:', "Linewidth", 1.25);
+hold on;
+plot(t, h_analytic_cont, 'k', "Linewidth", 1.25);
+hold off;
+xlim([-5 30]);
+legend("Discrete", "Continuous");
+title("Continuous Signal with Small Increments Overlay");
 
 %% 4: Z-Plane
 % Z-Plane/Transform shows stability
