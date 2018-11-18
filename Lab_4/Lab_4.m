@@ -149,6 +149,12 @@ title("Continuous Signal with Small Increments Overlay");
 %% 4: Z-Plane
 % Z-Plane/Transform shows stability
 % Poles inside unit circle = Stable
+numerator = [1 -2.5];
+denominator = [1 -1 0.7];
+
+figure(4); clf;
+zplane( numerator, denominator );
+
 
 %% 5: New Equation
 % Complex Conjugates and Stable = Decaying Sinusoid
