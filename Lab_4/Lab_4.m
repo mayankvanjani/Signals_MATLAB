@@ -139,6 +139,7 @@ denominator = [1 -1 0.7];
 
 figure(4); clf;
 zplane( numerator, denominator );
+title("Pole Zero Diagram");
 
 
 %% 5: New Equation
@@ -231,9 +232,9 @@ xlim([-5 30]);
 title("Difference Between Analytic and Partial (should be just error)");
 
 subplot(3,1,3);
-t = -1:0.01:30;
+t = 0:0.01:30;
 h_analytic_cont = A * r1.^t .* cos(w0*t + theta0) .* step(t,0);
-stem(0:len_h-1,h_analytic,'b:', "Linewidth", 1.25);
+stem(1:len_h,h_analytic,'b:', "Linewidth", 1.25);
 hold on;
 plot(t, h_analytic_cont, 'k', "Linewidth", 1.25);
 hold off;
@@ -246,3 +247,4 @@ numerator = [1 -0.6];
 denominator = [1 -2.1 1.6 -0.4];
 figure(8); clf;
 zplane( numerator, denominator );
+title("Pole Zero Diagram NEW");
