@@ -8,10 +8,12 @@ step = @(n, t) n >= t;
 delta = @(n,t) n == t;
 ramp = @(n,t) (n-t).*(n >= t);
 
+% myDiffeq function definition at the end of the script
+
 
 %% 1: Difference Equation
-% H(z) = Y/X
-% Result takes the form of a damped sinusoid
+%   H(z) = Y/X
+%   Result takes the form of a damped sinusoid
 
 %{
         Derivation of Impulse Response
@@ -24,7 +26,7 @@ y(0) = x(0) - 2.5x(-1) + y(-1) -0.7y(-2) = x(0)
 y(1) = x(1) - 2.5x(0) + y(0) -0.7y(-1) = x(1) - 2.5x(0) + y(0)
 y(2) = x(2) - 2.5x(1) + y(1) -0.7y(0)
 --> y(n) = x(n) - 2.5(n-1) + y(n-1) - 0.7y(n-2) for n >= 2
-Above steps in myDiffeq function
+Above steps in myDiffeq function (underneath)
 
 %}
 
@@ -53,11 +55,12 @@ hold off;
 xlim([-5 30]);
 legend("Difference Equation", "Filter");
 title("Difference Equation Impulse Response");
+% Difference equation and calculated impulse responses are the same!
 
 
 %% 2: Partial Franction Expansion
-% Using MATLAB Residue Command
-% h(n) = C1p1^nu(n) + C2p2^nu(n)
+%   Using MATLAB Residue Command
+%   h(n) = C1p1^nu(n) + C2p2^nu(n)
 numerator = [1 -2.5];
 denominator = [1 -1 0.7];
 [r,p,k] = residue( numerator, denominator );
@@ -85,12 +88,13 @@ hold off;
 xlim([-5 30]);
 legend("Difference Equation", "Filter", "Partial Fraction");
 title("Partial Fraction Expansion Impulse Response");
+% Impulse response using Partial Fraction Expansion is the same as before!
 
 
 %% 3: Expression
-% Non-Complex Impulse Response
-% h(n) = Ar^ncos(wn+theta)u(n)
-% C = Re^(ja)   p = re^(jB)
+%   Non-Complex Impulse Response
+%   h(n) = Ar^ncos(wn+theta)u(n)
+%   C = Re^(ja)   p = re^(jB)
 
 % Complex to Polar conversion
 R1 = abs(C1); R2 = abs(C2);
@@ -150,11 +154,12 @@ hold off;
 xlim([-5 30]);
 legend("Discrete", "Continuous");
 title("Continuous Signal with Small Increments Overlay");
+% Once again same impulse response
 
 
 %% 4: Z-Plane
-% Z-Plane/Transform shows stability
-% Poles inside unit circle = Stable
+%   Z-Plane/Transform shows stability
+%   Poles inside unit circle = Stable
 numerator = [1 -2.5];
 denominator = [1 -1 0.7];
 
@@ -164,8 +169,8 @@ title("Pole Zero Diagram");
 
 
 %% 5: New Equation
-% Complex Conjugates and Stable = Decaying Sinusoid
-% Copied steps from previous equation except an extra component/term
+%   Complex Conjugates and Stable = Decaying Sinusoid
+%   Copied steps from previous equation except an extra component/term
 
 % 1
 step = @(n, t) n >= t;
@@ -271,3 +276,51 @@ denominator = [1 -2.1 1.6 -0.4];
 figure(8); clf;
 zplane( numerator, denominator );
 title("Pole Zero Diagram NEW");
+
+
+%% myDiffeq Difference Equation Function
+%   Used in part 1 of both transfer functions
+
+function y = myDiffeq(x, case_val)
+
+N = length(x);
+y = zeros(1,N);
+
+switch case_val
+    
+    case 1
+        y(1) = x(1);
+        for n = 2:N-1
+            y(n) = x(n)+2*x(n-1)-0.95*y(n-1);
+        end
+        
+    case 2
+        y(1) = x(1);
+        for n = 2:N-1
+            y(n) = x(n)+2*x(n-1);
+        end
+        
+    case 3
+        y(1) = x(1);
+        for n = 2:N-1
+            y(n) = x(n)+2*x(n-1)-1.1*y(n-1);
+        end
+        
+    case 4
+        y(1) = x(1);
+        y(2) = x(2) - 2.5*x(1) + y(1);
+        for n = 3:N-1
+            y(n) = x(n) - 2.5*x(n-1) + y(n-1) - 0.7*y(n-2);
+        end
+        
+    case 5
+        y(1) = x(1);
+        y(2) = x(2) - 0.6*x(1) + 2.1*y(1);
+        y(3) = x(3) - 0.6*x(2) + 2.1*y(2) - 1.6*y(1);
+        for n = 4:N-1
+            y(n) = x(n) - 0.6*x(n-1) + 2.1*y(n-1) - 1.6*y(n-2) + 0.4*y(n-3);
+        end        
+    end
+    
+end
+
