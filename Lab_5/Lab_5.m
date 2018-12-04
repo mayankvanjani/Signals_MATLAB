@@ -31,7 +31,7 @@ xlim( [0,pi] );
 xlabel("\omega");
 title("System Frequency Response");
 subplot(2,1,2);
-plot(w./pi, abs(H));
+plot(w./pi, abs(H),"LineWidth",2);
 xlim( [0,1] );
 xlabel("\omega / \pi");
 title("Magnitude Frequency Response | H^f(\omega) | (with better axis units)");
@@ -81,12 +81,12 @@ title("Overlayed Signals");
 % evaluate H(z) polynomial exactly at given frequency using polyval
 
 expt = exp(j*0.1*pi);
-poly = polyval(numerator,expt) / polyval(denominator,expt);
+Hpoint = polyval(numerator,expt) / polyval(denominator,expt);
 
 figure(3); clf;
 plot(w./pi, abs(H));
 hold on;
-plot(0.1, abs(poly), 'rx');
+plot(0.1, abs(Hpoint), 'rx');
 hold off;
 title( "Magnitude Frequency Response | H^f(\omega) | with Marker at \omega = 0.1\pi" );
 
@@ -100,13 +100,56 @@ title( "Magnitude Frequency Response | H^f(\omega) | with Marker at \omega = 0.1
 %   transient so plot difference but dies out with time
 % assume step function implicitley with filter bc initial condition
 
+n = 0:100;
+x = cos(0.1*pi*n);
+y = filter(numerator,denominator,x);
+y2 = abs(Hpoint) .* cos( 0.1*pi*n + angle(Hpoint) );
 
+figure(4); clf;
+subplot(2,1,1);
+plot(0:length(x)-1,x,"LineWidth",2);
+hold on;
+plot(0:length(y)-1,y,'y',"LineWidth",2);
+plot(0:length(y)-1,y2,'k');
+hold off;
+ylim( [-1.5, 1.5] );
+legend( {"Input", "Output Filter", "Output Analytic"} );
+title("Magnitude Frequency Response | H^f(\omega) |");
+
+subplot(2,1,2);
+plot(0:length(y)-1,y-y2);
+ylim( [-1, 0.5] );
+title("Analytical and Filter Difference");
 
 
 %% 6
 % magnitude is 0 at popint 0.3pi
 % but theres step function so not exact zero because transient response
 % after dies out, steady state is 0
+
+n = 0:100;
+x = cos( (0.3*pi) * n ) .* step(n,0);
+y = filter(numerator,denominator,x);
+
+figure(5); clf;
+subplot(5,2,[1,3]);
+plot(0:length(x)-1,x);
+ylim( [-1.5,1.5] );
+title("Input Signal x(n)");
+
+subplot(5,2,[2,4]);
+plot(0:length(y)-1,y,'r',"LineWidth",2);
+ylim( [-1.5,1.5] );
+title("Output Signal y(n)");
+
+subplot(5,2,[7,8,9,10]);
+plot(0:length(x)-1,x);
+hold on;
+plot(0:length(y)-1,y,"LineWidth",2);
+hold off;
+ylim( [-1.5,1.5] );
+legend( {"Input Signal", "Output Signal"} );
+title("Overlayed Signals");
 
 
 %% 7 Questions
@@ -115,12 +158,59 @@ title( "Magnitude Frequency Response | H^f(\omega) | with Marker at \omega = 0.1
 % ^^^ Close means w is close in terms of w*pi radians
 % if poles at 0; dont affect magnitude when w moves around unit circle bc
 %   distance always 1 (this only affects phase)
-% 
+
+figure(6); clf;
+zplane(numerator,denominator);
+title("PoleZero Diagram for System");
 
 
 %% 8
 % Plot z-plane for all systems and predict freq response
 % last one is close to unit circle so large peak
+
+[H1, w1] = freqz(1,[1 1.8 -0.9]);
+[H2, w2] = freqz(1,[1 1.6 -0.72]);
+[H3, w3] = freqz(1,[1 1.53 -0.9]);
+[H4, w4] = freqz(1,[1 1.4 -0.72]);
+[H5, w5] = freqz(1,[1 -0.85]);
+[H6, w6] = freqz(1,[1 -0.95]);
+
+figure(7); clf;
+subplot(6,2,1);
+plot(w1./pi, abs(H1), "LineWidth", 2);
+xlim( [0,1] );
+subplot(6,2,2);
+zplane(1,[1 1.8 -0.9]);
+
+subplot(6,2,3);
+plot(w1./pi, abs(H1), "LineWidth", 2);
+xlim( [0,1] );
+subplot(6,2,4);
+zplane(1,[1 1.8 -0.9]);
+
+subplot(6,2,5);
+plot(w1./pi, abs(H1), "LineWidth", 2);
+xlim( [0,1] );
+subplot(6,2,6);
+zplane(1,[1 1.8 -0.9]);
+
+subplot(6,2,7);
+plot(w1./pi, abs(H1), "LineWidth", 2);
+xlim( [0,1] );
+subplot(6,2,8);
+zplane(1,[1 1.8 -0.9]);
+
+subplot(6,2,9);
+plot(w1./pi, abs(H1), "LineWidth", 2);
+xlim( [0,1] );
+subplot(6,2,10);
+zplane(1,[1 1.8 -0.9]);
+
+subplot(6,2,11);
+plot(w1./pi, abs(H1), "LineWidth", 2);
+xlim( [0,1] );
+subplot(6,2,12);
+zplane(1,[1 1.8 -0.9]);
 
 
 %% 9
