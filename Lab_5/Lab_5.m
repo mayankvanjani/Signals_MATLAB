@@ -10,14 +10,31 @@ ramp = @(n,t) (n-t).*(n >= t);
 
 
 %% 1
-
-
+% y(n) = 0.1x(n) - 0.1176x(n-1) + 0.1x(n-2) + 1.7119y(n-1) - 0.81y(n-2)
+% y(n) - 1.7119y(n-1) + 0.81y(n-2) = 0.1x(n) - 0.1176x(n-1) + 0.1x(n-2) 
+% H(z) = Y(s)/X(s) = (0.1 - 0.1176s + 0.1s^2) / (1 - 1.7119s + 0.81s^2)
 
 %% 2
 % H(w) = H(z) at z = e^(jw) is discrete Fourier Transform
 % [H,w] = freqz(b,z) => H is frequency response and w is indices
 % w from [0,pi] becasue real so repetitive from pi to 2pi
 % plot w / pi as freq response because easy to visualize
+
+numerator = [0.1, -0.1176, 0.1];
+denominator = [1, -1.7119, 0.81];
+[H, w] = freqz(numerator,denominator);
+
+figure(1); clf;
+subplot(2,1,1);
+plot(w, abs(H));
+xlim( [0,pi] );
+xlabel("\omega");
+title("System Frequency Response");
+subplot(2,1,2);
+plot(w./pi, abs(H));
+xlim( [0,1] );
+xlabel("\omega / \pi");
+title("Magnitude Frequency Response | H^f(\omega) | (with better axis units)");
 
 
 %% 3 Question
@@ -34,10 +51,44 @@ ramp = @(n,t) (n-t).*(n >= t);
 % Same analysis but we are taking IIR so dies out at higher values (almost
 % 0) but not quite. Still behaves like steady state response
 
+n = 0:100;
+x = cos( (0.1*pi) * n ) .* step(n,0);
+y = filter(numerator,denominator,x);
+
+figure(2); clf;
+subplot(5,2,[1,3]);
+plot(0:length(x)-1,x);
+ylim( [-1.5,1.5] );
+title("Input Signal x(n)");
+
+subplot(5,2,[2,4]);
+plot(0:length(y)-1,y,'r');
+ylim( [-1.5,1.5] );
+title("Output Signal y(n)");
+
+subplot(5,2,[7,8,9,10]);
+plot(0:length(x)-1,x);
+hold on;
+plot(0:length(y)-1,y);
+hold off;
+ylim( [-1.5,1.5] );
+legend( {"Input Signal", "Output Signal"} );
+title("Overlayed Signals");
+
 
 %% 4
 % evaluate exactly, put mark at 0.1pi point of freq response
 % evaluate H(z) polynomial exactly at given frequency using polyval
+
+expt = exp(j*0.1*pi);
+poly = polyval(numerator,expt) / polyval(denominator,expt);
+
+figure(3); clf;
+plot(w./pi, abs(H));
+hold on;
+plot(0.1, abs(poly), 'rx');
+hold off;
+title( "Magnitude Frequency Response | H^f(\omega) | with Marker at \omega = 0.1\pi" );
 
 
 %% 5 Questions
@@ -48,6 +99,8 @@ ramp = @(n,t) (n-t).*(n >= t);
 % analytical has no transient because continuous sinusoid, filter has
 %   transient so plot difference but dies out with time
 % assume step function implicitley with filter bc initial condition
+
+
 
 
 %% 6
