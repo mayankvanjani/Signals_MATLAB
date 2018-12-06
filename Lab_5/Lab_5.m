@@ -162,10 +162,14 @@ title("Overlayed Signals");
 
 %% 7 Questions
 % Zeros and poles from transfer function using partial fractions
-% Close to zero = dip; close to pole = spike
+% Close to zero = dip; Close to pole = spike
 % ^^^ Close means w is close in terms of w*pi radians
-% if poles at 0; dont affect magnitude when w moves around unit circle bc
-%   distance always 1 (this only affects phase)
+% If poles at 0, dont affect magnitude when w moves around unit circle
+%   because distance always 1 (this only affects phase)
+% We can predict the frequency response from the polezero diagram by
+%   looking at the placements of the poles and zeros. As mentioned before,
+%   poles = spike and zeros = dips. If the zero is on the unit circle, then
+%   there is a dip to 0 at that angle.
 
 figure(6); clf;
 zplane(numerator,denominator);
@@ -174,7 +178,21 @@ title("PoleZero Diagram for System");
 
 %% 8
 % Plot z-plane for all systems and predict freq response
-% last one is close to unit circle so large peak
+% Last one is close to unit circle so large peak
+% We can predict the transfer functions from the polezero diagram and vice
+%   versa even if the graphs are mixed up:
+
+% All of them have zeros at the origin which doesnt change anything since
+%   nomatter the position on the unit circle changing with w, the distance
+%   from the origin is the same
+% The first two are very similar except the poles are slightly closer
+%   (respective to the unit circle or the value of w on the unit circle)
+%   for the second one resulting in a sharper pole spike (point at w = pi is
+%   closer to the poles increasing their effect)
+% The next two use the same effect so the second one has a larger spike due
+%   to closer poles to the w = pi value
+% The last two clearly have poles at w = 0pi = 0 but the second one is
+%   closer to the unit circle making its peak larger
 
 [H1, w1] = freqz(1,[1 1.8 -0.9]);
 [H2, w2] = freqz(1,[1 1.6 -0.72]);
@@ -222,12 +240,10 @@ zplane(1,[1 -0.95]);
 
 
 %% 9
-% logscale u axis
-% semilog x for loggscale in x axis, us plot if not want log scale
-% smaller second peak between 0.6 and 1 (pic) because farther from all
-%   poles at 0.8pi than at 0 (also this means 0.8pi or 0pi at UNIT CIRCLE)
-% first peak is larger because at 0pi = w, close to all 3 poles so big
-%   spike
+% Semilog y for logscale in y axis, use plot if don't want log scale
+% Smaller second peak between 0.6 and 1 because farther from all
+%   poles at 0.8pi versus at 0 (also this means 0.8pi or 0pi at UNIT CIRCLE)
+% First peak is larger because at 0pi = w, close to all 3 poles
 
 poles = [ 0.8*exp(j*pi*0.2), 0.8*exp(-1j*pi*0.2), 0.7 ];
 zeros = [ -1, exp(j*pi*0.6), exp(-j*pi*0.6) ];
@@ -242,8 +258,8 @@ h = filter(num,denom,x);
 
 figure(8); clf;
 subplot(2,2,1);
-% semilogy(w9./pi, abs(H9));
-plot(w9./pi, abs(H9));
+semilogy(w9./pi, abs(H9));
+% plot(w9./pi, abs(H9));
 
 subplot(2,2,2);
 zplane(num,denom);
@@ -251,7 +267,9 @@ zplane(num,denom);
 subplot(2,2,[3 4]);
 plot(0:length(x)-1,h);
 
+% ------------------------- %
 % New Poles
+% ------------------------- %
 poles = [ 0.98*exp(j*pi*0.2), 0.98*exp(-1j*pi*0.2), 0.7 ];
 denom = poly( poles );
 
@@ -261,8 +279,8 @@ h = filter(num,denom,x);
 
 figure(9); clf;
 subplot(2,2,1);
-% semilogy(w9./pi, abs(H9));
-plot(w9./pi, abs(H9));
+semilogy(w9./pi, abs(H9));
+% plot(w9./pi, abs(H9));
 
 subplot(2,2,2);
 zplane(num,denom);
